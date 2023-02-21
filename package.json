@@ -1,0 +1,18 @@
+{
+  "name": "plotter-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "adaptive-bezier-curve": "^1.0.3",
+    "fast-xml-parser": "^4.1.2",
+    "rbush": "^3.0.1",
+    "style-to-object": "^0.4.1",
+    "svgpath": "^2.6.0",
+    "tinyqueue": "^2.0.3"
+  }
+}
