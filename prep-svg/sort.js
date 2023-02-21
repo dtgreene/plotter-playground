@@ -45,8 +45,8 @@ export function sort(segments, allowReverse = true) {
       const path = segments[pathIndex];
 
       // update the current point
-      currentPoint[0] = nearest[0];
-      currentPoint[1] = nearest[1];
+      currentPoint[0] = path[path.length - 2];
+      currentPoint[1] = path[path.length - 1];
 
       // remove both this node and the reversed neighbor
       tree.remove(nearest, removePoint);
@@ -82,8 +82,8 @@ export function sort(segments, allowReverse = true) {
       const path = segments[pathIndex];
 
       // update the current point
-      currentPoint[0] = nearest[0];
-      currentPoint[1] = nearest[1];
+      currentPoint[0] = path[path.length - 2];
+      currentPoint[1] = path[path.length - 1];
 
       // remove this node
       tree.remove(nearest, removePoint);
