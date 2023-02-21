@@ -51,9 +51,9 @@ export function sort(segments, allowReverse = true) {
     // start at the origin
     let currentPoint = [0, 0];
 
-    while (tree.all().length > 0) {
+    while (result.length < segments.length) {
       // find the nearest node
-      const [nearest, n2, n3] = knn(tree, currentPoint[0], currentPoint[1], 3);
+      const [nearest] = knn(tree, currentPoint[0], currentPoint[1], 3);
       const pathIndex = nearest[2];
       const originalPath = segments[pathIndex];
       const isReversed = nearest[3];
@@ -87,7 +87,7 @@ export function sort(segments, allowReverse = true) {
     // start at the origin
     let currentPoint = [0, 0];
 
-    while (tree.all().length > 0) {
+    while (result.length < segments.length) {
       // find the nearest node
       const [nearest] = knn(tree, currentPoint[0], currentPoint[1], 1);
       const pathIndex = nearest[2];
