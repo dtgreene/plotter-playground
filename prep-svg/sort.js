@@ -26,8 +26,21 @@ export function sort(segments, allowReverse = true) {
     const data = segments.reduce((acc, current, index) => {
       const endIndex = current.length - 2;
 
-      acc.push([current[0], current[1], index]);
-      acc.push([current[endIndex], current[endIndex + 1], index, true]);
+      // the path start
+      const x1 = current[0];
+      const y1 = current[1];
+
+      // the path end
+      const x2 = current[endIndex];
+      const y2 = current[endIndex + 1];
+
+      acc.push([x1, y1, index]);
+
+      // if the path end is different than the path start
+      // otherwise, reversing the path makes no difference
+      if (x1 !== x2 || y1 !== y2) {
+        acc.push([x2, y2, index, true]);
+      }
 
       return acc;
     }, []);
@@ -40,25 +53,24 @@ export function sort(segments, allowReverse = true) {
 
     while (tree.all().length > 0) {
       // find the nearest node
-      const [nearest] = knn(tree, currentPoint[0], currentPoint[1], 1);
+      const [nearest, n2, n3] = knn(tree, currentPoint[0], currentPoint[1], 3);
       const pathIndex = nearest[2];
-      const path = segments[pathIndex];
+      const originalPath = segments[pathIndex];
+      const isReversed = nearest[3];
+
+      // reverse the original path if this node is reversed
+      const path = isReversed ? reversePath(originalPath) : originalPath;
+
+      // add the path to the result
+      result.push(path);
 
       // update the current point
       currentPoint[0] = path[path.length - 2];
       currentPoint[1] = path[path.length - 1];
 
-      // remove both this node and the reversed neighbor
+      // remove both the forward and reverse version of this node
       tree.remove(nearest, removePoint);
       tree.remove(nearest, removePoint);
-
-      // check the reverse flag and try not to mutate the original data
-      if (nearest[3]) {
-        path.slice().reverse();
-      }
-
-      // add the path to the result
-      result.push(path);
     }
   } else {
     // create an array containing the start point for each segment
@@ -81,7 +93,7 @@ export function sort(segments, allowReverse = true) {
       const pathIndex = nearest[2];
       const path = segments[pathIndex];
 
-      // update the current point
+      // the current point is now the end of the path
       currentPoint[0] = path[path.length - 2];
       currentPoint[1] = path[path.length - 1];
 
@@ -91,6 +103,16 @@ export function sort(segments, allowReverse = true) {
       // add the path to the result
       result.push(path);
     }
+  }
+
+  return result;
+}
+
+function reversePath(path) {
+  const result = [];
+
+  for (let i = path.length - 1; i >= 0; i -= 2) {
+    result.push(path[i - 1], path[i]);
   }
 
   return result;
@@ -110,12 +132,13 @@ function knn(tree, x, y, n, predicate, maxDistance) {
   let candidate;
 
   const queue = new Queue(undefined, compareDist);
+  const m2 = maxDistance * maxDistance || 0;
 
   while (node) {
     for (i = 0; i < node.children.length; i++) {
       child = node.children[i];
       dist = boxDist(x, y, node.leaf ? toBBox(child) : child);
-      if (!maxDistance || dist <= maxDistance * maxDistance) {
+      if (!m2 || dist <= m2) {
         queue.push({
           node: child,
           isItem: node.leaf,

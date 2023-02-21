@@ -1,2 +1,4 @@
 /node_modules
 /output.json
+
+.DS_STORE

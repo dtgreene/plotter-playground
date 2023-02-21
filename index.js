@@ -7,7 +7,7 @@ import { sort } from './prep-svg/sort.js';
 
 const svgFile = fs.readFileSync('./test_2.svg').toString();
 
-const paths = segment(svgFile);
+const paths = segment(svgFile, { pathEpsilon: 0.5 });
 const targetLayerId = 'layer1';
 
 let segments = paths.reduce((acc, current) => {
@@ -16,6 +16,8 @@ let segments = paths.reduce((acc, current) => {
   }
   return acc;
 }, []);
+
+// segments = segments.map((points) => points.map((value) => value *= 6.25))
 
 segments = round(segments, 4);
 segments = simplify(segments, { mergeDistance: 0.1, minPathSize: 1 });

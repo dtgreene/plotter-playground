@@ -2,8 +2,10 @@
 	id="target-svg"
 	xmlns="http://www.w3.org/2000/svg"
 	viewBox="0 0 128 128"
+  width="800"
+  height="800"
 >
-	<g id="layer-1" fill="none" stroke="black">
+	<g id="layer1" fill="none" stroke="black">
 		<!-- Simple shapes -->
 		<rect x="5" y="5" width="10" height="10" rx="2" />
 		<circle cx="25" cy="10" r="5" />
@@ -11,8 +13,7 @@
 		<line x1="5" y1="20" x2="123" y2="20" />
 		<polyline points="50,15 55,5 60,15 50,15" />
 		<polygon points="70,5 75,5 77.5,10 75,15 70,15 67.5,10" />
-	</g>
-	<g id="layer-2" fill="none" stroke="black">
+    <polygon points="90,5 95,5 97.5,10 95,15 90,15 87.5,10" />
 		<!-- Mixed lines -->
 		<path d="M5,30 h20 v10 l20,0 l0,-10 l20,0" />
 		<!-- Cubic Bezier -->
