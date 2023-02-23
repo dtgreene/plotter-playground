@@ -1,9 +1,7 @@
 import * as fs from 'fs';
 
-import { segment } from './prep-svg/segment/segment.js';
-import { simplify } from './prep-svg/simplify.js';
-import { round } from './prep-svg/round.js';
-import { sort } from './prep-svg/sort.js';
+import { segment } from './lib/segment-svg/segment.js';
+import { round, simplify, sort } from './lib/segment-optimize/index.js';
 
 const svgFile = fs.readFileSync('./test_2.svg').toString();
 
