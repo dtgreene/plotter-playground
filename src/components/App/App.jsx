@@ -1,11 +1,11 @@
 import { useState, useContext } from 'react';
 import {
-  Alert,
   Box,
   Button,
   IconButton,
   Switch,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import produce from 'immer';
@@ -19,6 +19,7 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 import copy from 'copy-to-clipboard';
 
 const isFireFox = navigator.userAgent.indexOf('Firefox') != -1;
+const defaultCopyText = 'Copy processed data';
 
 const styles = {
   app: {
@@ -60,6 +61,7 @@ export const App = () => {
     points: false,
   });
   const [busy, setBusy] = useState(false);
+  const [copyText, setCopyText] = useState(defaultCopyText);
 
   const [background, setBackground] = useLocalStorage(
     'plotter-playground:background',
@@ -169,7 +171,10 @@ export const App = () => {
   const handleCopyClick = () => {
     if (!segments) return;
 
+    setCopyText('Copied!');
     copy(JSON.stringify(segments));
+
+    setTimeout(() => setCopyText(defaultCopyText), 2000);
   };
 
   return (
@@ -535,7 +540,7 @@ export const App = () => {
             sx={{ mb: 2 }}
             onClick={handleCopyClick}
           >
-            Copy Processed Data
+            {copyText}
           </Button>
         </form>
       </Box>
