@@ -72,6 +72,11 @@ export const App = () => {
 
     setSegments(result.segments);
     setStats(result.stats);
+    setRendering({
+      original: false,
+      penDown: true,
+      penUp: true
+    });
   };
 
   const handleOptimizationToggle = (key, event) => {
@@ -97,11 +102,11 @@ export const App = () => {
       // reset state
       setSegments(null);
       setStats(null);
-      setRendering(
-        produce((draft) => {
-          draft.original = true;
-        })
-      );
+      setRendering({
+        original: true,
+        penDown: false,
+        penUp: false
+      });
 
       setBusy(true);
       setSVG(await getSVGFromURL(fileName));
