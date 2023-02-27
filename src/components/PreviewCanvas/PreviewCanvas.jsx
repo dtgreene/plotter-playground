@@ -57,19 +57,34 @@ export const PreviewCanvas = ({
         ctx.drawImage(imageObject, x, y, targetWidth, targetHeight);
       }
 
-      if(!segments) return;
+      if (!segments) return;
 
+      // translate the drawing context to match the target dimensions
       const viewBoxRatio = {
         width: targetWidth / viewBox.width,
         height: targetHeight / viewBox.height,
       };
 
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(viewBoxRatio.width, viewBoxRatio.height);
+
+      if (rendering.points) {
+        ctx.fillStyle = 'red';
+        segments.forEach((points) => {
+          for (let i = 0; i < points.length; i += 2) {
+            const x = points[i];
+            const y = points[i + 1];
+
+            ctx.fillRect(x - 1, y - 1, 2, 2);
+          }
+        });
+      }
+
+      let lastSegment = [0, 0];
+
       if (rendering.penDown && !rendering.penUp) {
         // render pen down but not pen up
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.scale(viewBoxRatio.width, viewBoxRatio.height);
-
         ctx.strokeStyle = 'red';
         segments.forEach((points) => {
           // draw pen down movement
@@ -80,17 +95,17 @@ export const PreviewCanvas = ({
             const y = points[i + 1];
 
             ctx.lineTo(x, y);
+
+            lastSegment = [x, y];
+          }
+          // actually closing the path helps prevent weird artifacts
+          if (points[0] === lastSegment[0] && points[1] === lastSegment[1]) {
+            ctx.closePath();
           }
           ctx.stroke();
         });
-        ctx.restore();
       } else if (rendering.penUp && !rendering.penDown) {
         // render pen up but not pen down
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.scale(viewBoxRatio.width, viewBoxRatio.height);
-
-        let lastSegment = [0, 0];
         ctx.strokeStyle = 'blue';
         segments.forEach((points) => {
           // draw pen up movement
@@ -101,14 +116,8 @@ export const PreviewCanvas = ({
 
           lastSegment = [points[points.length - 2], points[points.length - 1]];
         });
-        ctx.restore();
       } else if (rendering.penDown && rendering.penUp) {
         // render both pen down and pen up
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.scale(viewBoxRatio.width, viewBoxRatio.height);
-
-        let lastSegment = [0, 0];
         segments.forEach((points) => {
           // draw pen up movement
           ctx.beginPath();
@@ -129,10 +138,16 @@ export const PreviewCanvas = ({
 
             lastSegment = [x, y];
           }
+          // actually closing the path helps prevent weird artifacts
+          if (points[0] === lastSegment[0] && points[1] === lastSegment[1]) {
+            ctx.closePath();
+          }
           ctx.stroke();
         });
-        ctx.restore();
       }
+
+      // restore the drawing context
+      ctx.restore();
     }
   }, [dimensions, imageObject, rendering, segments]);
 

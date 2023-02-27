@@ -55,6 +55,7 @@ export const App = () => {
     original: true,
     penDown: false,
     penUp: false,
+    points: false,
   });
   const [busy, setBusy] = useState(false);
 
@@ -75,7 +76,8 @@ export const App = () => {
     setRendering({
       original: false,
       penDown: true,
-      penUp: true
+      penUp: true,
+      points: false,
     });
   };
 
@@ -105,7 +107,8 @@ export const App = () => {
       setRendering({
         original: true,
         penDown: false,
-        penUp: false
+        penUp: false,
+        points: false,
       });
 
       setBusy(true);
@@ -267,6 +270,15 @@ export const App = () => {
               onChange={(event) => handleRenderingToggle('original', event)}
             />
             <span>Original</span>
+          </Box>
+        </Box>
+        <Box mb={2} display="flex">
+          <Box>
+            <Switch
+              checked={rendering.points}
+              onChange={(event) => handleRenderingToggle('points', event)}
+            />
+            <span>Points</span>
           </Box>
         </Box>
         <Box mb={2} display="flex" alignItems="center" gap={1}>
