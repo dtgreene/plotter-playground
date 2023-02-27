@@ -7,12 +7,29 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build --base=https://dtgreene.github.io/plotter-playground/dist/"
+  },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@fontsource/poppins": "^4.5.10",
+    "@mui/icons-material": "^5.11.9",
+    "@mui/material": "^5.11.10",
     "adaptive-bezier-curve": "^1.0.3",
     "fast-xml-parser": "^4.1.2",
+    "immer": "^9.0.19",
     "rbush": "^3.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.2",
     "style-to-object": "^0.4.1",
     "svgpath": "^2.6.0",
     "tinyqueue": "^2.0.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^3.1.0",
+    "vite": "^4.1.4"
   }
 }
