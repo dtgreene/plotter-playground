@@ -19,7 +19,7 @@ const baseTheme = {
 };
 
 export const MuiProvider = ({ children }) => {
-  const [isDark, setIsDark] = useLocalStorage('plotter-playground:dark', false);
+  const [isDark, setIsDark] = useLocalStorage('plotter-playground:dark', true);
 
   const theme = useMemo(
     () =>
