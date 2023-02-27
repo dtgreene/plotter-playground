@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
 import {
+  Alert,
   Box,
   Button,
   IconButton,
@@ -15,6 +16,7 @@ import { getSVGFromFile, getSVGFromURL, segmentSVG } from '../../utils';
 import { PreviewCanvas } from '../PreviewCanvas';
 import { MuiContext } from '../../contexts/MuiProvider';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
+import copy from 'copy-to-clipboard';
 
 const isFireFox = navigator.userAgent.indexOf('Firefox') != -1;
 
@@ -162,6 +164,12 @@ export const App = () => {
 
   const handleBackgroundChange = (event) => {
     setBackground(event.target.value);
+  };
+
+  const handleCopyClick = () => {
+    if (!segments) return;
+
+    copy(JSON.stringify(segments));
   };
 
   return (
@@ -510,8 +518,24 @@ export const App = () => {
               <Box color="text.secondary">Nothing to see here</Box>
             )}
           </Box>
-          <Button variant="contained" fullWidth type="submit" disabled={!svg}>
+          <Button
+            variant="contained"
+            fullWidth
+            type="submit"
+            disabled={!svg}
+            sx={{ mb: 2 }}
+          >
             Process
+          </Button>
+          <Button
+            variant="contained"
+            fullWidth
+            type="button"
+            disabled={!segments}
+            sx={{ mb: 2 }}
+            onClick={handleCopyClick}
+          >
+            Copy Processed Data
           </Button>
         </form>
       </Box>

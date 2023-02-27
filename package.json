@@ -18,6 +18,7 @@
     "@mui/icons-material": "^5.11.9",
     "@mui/material": "^5.11.10",
     "adaptive-bezier-curve": "^1.0.3",
+    "copy-to-clipboard": "^3.3.3",
     "fast-xml-parser": "^4.1.2",
     "immer": "^9.0.19",
     "rbush": "^3.0.1",
