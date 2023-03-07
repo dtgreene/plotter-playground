@@ -215,6 +215,14 @@ export const App = () => {
             test_3.svg
           </Button>
         </Box>
+        <Box mb={2} display="flex" gap={1}>
+          <Button
+            variant="outlined"
+            onClick={() => handleTestClick('test_4.svg')}
+          >
+            test_4.svg
+          </Button>
+        </Box>
         <Box
           mb={2}
           p={2}
