@@ -6,8 +6,7 @@ import produce from 'immer';
 
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
-export const MuiContext = createContext({ toggleColorMode: () => {} });
-
+const defaultContext = { toggleColorMode: () => {} };
 const baseTheme = {
   palette: {
     primary: teal,
@@ -17,6 +16,8 @@ const baseTheme = {
     fontSize: 12,
   },
 };
+
+export const MuiContext = createContext(defaultContext);
 
 export const MuiProvider = ({ children }) => {
   const [isDark, setIsDark] = useLocalStorage('plotter-playground:dark', true);

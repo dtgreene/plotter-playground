@@ -21,8 +21,10 @@ export function sort(segments, allowReverse = true) {
   const result = [];
 
   if (allowReverse) {
+    const removePoint = (a, b) => a[4] === b[4];
+
     // create an array containing both the start and end points for each segment
-    // the format is [x, y, index, reversed]
+    // the format is [x1, y1, x2, y2, index, reversed]
     const data = segments.reduce((acc, current, index) => {
       const endIndex = current.length - 2;
 
@@ -34,12 +36,12 @@ export function sort(segments, allowReverse = true) {
       const x2 = current[endIndex];
       const y2 = current[endIndex + 1];
 
-      acc.push([x1, y1, index]);
+      acc.push([x1, y1, x2, y2, index]);
 
       // if the path end is different than the path start
       // otherwise, reversing the path makes no difference
       if (x1 !== x2 || y1 !== y2) {
-        acc.push([x2, y2, index, true]);
+        acc.push([x2, y2, x1, y1, index, true]);
       }
 
       return acc;
@@ -54,25 +56,28 @@ export function sort(segments, allowReverse = true) {
     while (result.length < segments.length) {
       // find the nearest node
       const [nearest] = knn(tree, currentPoint[0], currentPoint[1], 1);
-      const pathIndex = nearest[2];
-      const originalPath = segments[pathIndex];
-      const isReversed = nearest[3];
-
-      // reverse the original path if this node is reversed
-      const path = isReversed ? reversePath(originalPath) : originalPath;
-
-      // add the path to the result
-      result.push(path);
-
-      // update the current point
-      currentPoint[0] = path[path.length - 2];
-      currentPoint[1] = path[path.length - 1];
 
       // remove both the forward and reverse version of this node
       tree.remove(nearest, removePoint);
       tree.remove(nearest, removePoint);
+
+      const [_x1, _y1, x2, y2, pathIndex, isReversed] = nearest;
+
+      // update the current point
+      currentPoint[0] = x2;
+      currentPoint[1] = y2;
+
+      // look up the original path
+      const originalPath = segments[pathIndex];
+      // reverse the path if this node is reversed
+      const path = isReversed ? reversePath(originalPath) : originalPath;
+
+      // add the path to the result
+      result.push(path);
     }
   } else {
+    const removePoint = (a, b) => a[2] === b[2];
+
     // create an array containing the start point for each segment
     // the format is [x, y, index]
     const data = segments.map((segment, index) => [
@@ -115,10 +120,6 @@ function reversePath(path) {
   }
 
   return result;
-}
-
-function removePoint(a, b) {
-  return a[2] === b[2];
 }
 
 function knn(tree, x, y, n, predicate, maxDistance) {
