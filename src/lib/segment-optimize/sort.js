@@ -56,16 +56,7 @@ export function sort(segments, allowReverse = true) {
     while (result.length < segments.length) {
       // find the nearest node
       const [nearest] = knn(tree, currentPoint[0], currentPoint[1], 1);
-
-      // remove both the forward and reverse version of this node
-      tree.remove(nearest, removePoint);
-      tree.remove(nearest, removePoint);
-
-      const [_x1, _y1, x2, y2, pathIndex, isReversed] = nearest;
-
-      // update the current point
-      currentPoint[0] = x2;
-      currentPoint[1] = y2;
+      const [_x1, _y1, x2, y2, pathIndex, isReversed = false] = nearest;
 
       // look up the original path
       const originalPath = segments[pathIndex];
@@ -74,6 +65,14 @@ export function sort(segments, allowReverse = true) {
 
       // add the path to the result
       result.push(path);
+
+      // update the current point
+      currentPoint[0] = x2;
+      currentPoint[1] = y2;
+
+      // remove both the forward and reverse version of this node
+      tree.remove(nearest, removePoint);
+      tree.remove(nearest, removePoint);
     }
   } else {
     const removePoint = (a, b) => a[2] === b[2];
@@ -94,18 +93,18 @@ export function sort(segments, allowReverse = true) {
 
     while (result.length < segments.length) {
       const [nearest] = knn(tree, currentPoint[0], currentPoint[1], 1);
-      const pathIndex = nearest[2];
+      const [x1, y1, pathIndex] = nearest;
       const path = segments[pathIndex];
-
-      // the current point is now the end of the path
-      currentPoint[0] = path[path.length - 2];
-      currentPoint[1] = path[path.length - 1];
-
-      // remove this node
-      tree.remove(nearest, removePoint);
 
       // add the path to the result
       result.push(path);
+
+      // update the current point
+      currentPoint[0] = x1;
+      currentPoint[1] = y1;
+
+      // remove this node
+      tree.remove(nearest, removePoint);
     }
   }
 
