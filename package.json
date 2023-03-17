@@ -21,13 +21,11 @@
     "copy-to-clipboard": "^3.3.3",
     "fast-xml-parser": "^4.1.2",
     "immer": "^9.0.19",
-    "rbush": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.2",
     "style-to-object": "^0.4.1",
-    "svgpath": "^2.6.0",
-    "tinyqueue": "^2.0.3"
+    "svgpath": "^2.6.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^3.1.0",
