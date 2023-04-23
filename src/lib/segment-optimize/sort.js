@@ -68,7 +68,10 @@ export function sort(segments) {
 
     if (hasReverse) {
       // attempt to remove the reversed node
-      tree.disableNode([currentPoint[0], currentPoint[1], pathIndex], compareNodes);
+      tree.disableNode(
+        [currentPoint[0], currentPoint[1], pathIndex],
+        compareNodes
+      );
     }
   }
 
